@@ -3,9 +3,12 @@ package services;
 import exceptions.InvalidGateException;
 import models.*;
 import repositories.GateRepository;
+import repositories.ParkingLotRepository;
+import repositories.TicketRepository;
 import repositories.VehicleRepository;
 import strategies.spotAssignmentStrategy.SpotAssignmentStrategy;
 
+import java.util.Date;
 import java.util.Optional;
 
 //Business Logic
@@ -14,11 +17,20 @@ public class TicketService {
     private GateRepository gateRepository;
     private VehicleRepository vehicleRepository;
     private SpotAssignmentStrategy spotAssignmentStrategy;
+    private TicketRepository ticketRepository;
+    private ParkingLotRepository parkingLotRepository;
 
-    public TicketService(GateRepository gateRepository, VehicleRepository vehicleRepository, SpotAssignmentStrategy spotAssignmentStrategy) {
+    public TicketService(
+            GateRepository gateRepository,
+            VehicleRepository vehicleRepository,
+            SpotAssignmentStrategy spotAssignmentStrategy,
+            TicketRepository ticketRepository,
+            ParkingLotRepository parkingLotRepository) {
         this.gateRepository = gateRepository;
         this.vehicleRepository = vehicleRepository;
         this.spotAssignmentStrategy = spotAssignmentStrategy;
+        this.ticketRepository = ticketRepository;
+        this.parkingLotRepository = parkingLotRepository;
     }
 
 
@@ -63,9 +75,27 @@ public class TicketService {
             vehicle = vehicleOptional.get();
         }
 
-        ParkingSpot parkingSpot = spotAssignmentStrategy.findSpot();
+        ParkingLot parkingLot = parkingLotRepository.getParkingLotOfGate();
+
+        Optional<ParkingSpot> parkingSpotOptional = spotAssignmentStrategy.findSpot(
+                vehicleType, parkingLot, gate
+        );
+
+        if(parkingSpotOptional.isEmpty())
+        {
+            throw new InvalidGateException();
+        }
+        ParkingSpot parkingSpot = parkingSpotOptional.get();
+
+        Ticket ticket = new Ticket();
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setGate(gate);
+        ticket.setEntryTime(new Date());
+        ticket.setVehicle(vehicle);
+        ticket.setOperator(operator);
 
 
-        return null;
+        return ticketRepository.save(ticket);
+
     }
 }
