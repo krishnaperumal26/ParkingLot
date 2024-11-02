@@ -1,4 +1,5 @@
 package models;
 
-public class GateStatus {
+public enum GateStatus {
+    OPEN, CLOSED
 }

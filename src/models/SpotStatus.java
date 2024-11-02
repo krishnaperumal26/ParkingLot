@@ -1,4 +1,5 @@
 package models;
 
-public class SpotStatus {
+public enum SpotStatus {
+    AVAILABLE, UNAVAILABLE, PARKED
 }

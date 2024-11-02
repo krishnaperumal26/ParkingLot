@@ -1,8 +1,12 @@
-package models;
+package dtos;
 
-public class Vehicle extends BaseModel{
+import models.VehicleType;
+
+public class GenerateTicketRequestDto {
     private String vehicleNumber;
     private VehicleType vehicleType;
+    private Long gateId;
+
 
     public String getVehicleNumber() {
         return vehicleNumber;
@@ -18,5 +22,13 @@ public class Vehicle extends BaseModel{
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public Long getGateId() {
+        return gateId;
+    }
+
+    public void setGateId(Long gateId) {
+        this.gateId = gateId;
     }
 }
