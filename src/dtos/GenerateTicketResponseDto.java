@@ -6,7 +6,7 @@ public class GenerateTicketResponseDto {
     private String operatorName;
     private int spotNumber;
     private ResponseStatus responseStatus;
-
+    private String message;
 
     public Long getTicketId() {
         return ticketId;
@@ -38,5 +38,13 @@ public class GenerateTicketResponseDto {
 
     public void setResponseStatus(ResponseStatus responseStatus) {
         this.responseStatus = responseStatus;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

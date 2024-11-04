@@ -75,7 +75,7 @@ public class TicketService {
             vehicle = vehicleOptional.get();
         }
 
-        ParkingLot parkingLot = parkingLotRepository.getParkingLotOfGate();
+        ParkingLot parkingLot = parkingLotRepository.getParkingLotOfGate(gate);
 
         Optional<ParkingSpot> parkingSpotOptional = spotAssignmentStrategy.findSpot(
                 vehicleType, parkingLot, gate
